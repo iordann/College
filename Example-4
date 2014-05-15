@@ -1,0 +1,42 @@
+/* Sample that searches for a number in binary file and shows his possition  */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+void fileSearch(FILE *fp, char *fpName, char *num)
+{
+	char *fRead[50];
+	int a = 1, isFound = 0;
+	while ((fgets(fRead, strlen(num) + 1, fp)) != NULL)
+	{
+		if (!strcmp(num, fRead))
+		{
+			printf("Your number has been found on the %d byte!\n", ftell(fp) - strlen(num));
+			isFound = 1;
+		}
+		a++;
+		fseek(fp, a - 1, SEEK_SET);
+	}
+	if (isFound == 0)
+		printf("Your number (%s) has not been found in the file!\n", num);
+}
+int main()
+{
+	FILE *fp = NULL;
+	errno_t err;
+	char fpName[100], num[15];
+	printf("Input the name of the file: ");
+	gets_s(fpName, 100);
+	err = fopen_s(&fp, fpName, "r");
+	if (fp == NULL)
+	{
+		printf("Wrong name of the file!\n");
+		exit(0);
+	}
+	printf("Input a number: ");
+	gets_s(num, 15);
+	fileSearch(fp, fpName, num);
+	return 0;
+}
