@@ -1,0 +1,197 @@
+/* Sample that count average count of dots per line, count of {} which are located at the beginning of the line
+and count of both /**/ and // commtents */
+
+#include<stdio.h>
+#include<stdlib.h>
+
+void fileread(char *file)
+{
+	FILE *fp;
+	errno_t err;
+	char filecontent;
+	err = fopen_s(&fp, file, "r");
+	if (fp == NULL)
+		perror("Error! Cannot open file!");
+	else
+	do
+	{
+		filecontent = fgetc(fp);
+		putchar(filecontent);
+	} while (filecontent != EOF);
+	fclose(fp);
+}
+void TaskB(char *file)/*count of {}*/
+{
+	FILE *fp;
+	errno_t err;
+	int count = 0;
+	char filecontent;
+	err = fopen_s(&fp, file, "r");
+	if (fp == NULL)
+		perror("Error! Cannot open file!");
+	else
+	do
+	{
+		filecontent = fgetc(fp);
+		if (filecontent == '\n')
+		{
+			filecontent = fgetc(fp);
+			if (filecontent == '{' || filecontent == '}')
+			{
+				count++;
+			}
+		}
+	} while (filecontent != EOF);
+	fclose(fp);
+	printf("The count of { and } which are located in the begining is %d\n", count);
+}
+int count_dots(char *file)
+{
+	FILE *fp;
+	errno_t err;
+	int dots = 0;
+	char filecontent;
+	err = fopen_s(&fp, file, "r");
+	if (fp == NULL)
+		perror("Error! Cannot open file!");
+	else
+	do
+	{
+		filecontent = fgetc(fp);
+		if (filecontent == '.') dots++;
+	} while (filecontent != EOF);
+	fclose(fp);
+	return dots;
+}
+void TaskC(char *file)/*arithmetic of dots per line to whole dots*/
+{
+	FILE *fp;
+	errno_t err;
+	char filecontent;
+	float arithmeticaverage = 0;
+	int lines = 0, dot = 0, all_dots = 0;
+	err = fopen_s(&fp, file, "r");
+	if (fp == NULL)
+		perror("Error! Cannot open file!");
+	else{
+		printf("Arithmeticaverage \t Number of dots \tLine number\n");
+		do
+		{
+			all_dots = count_dots(file);
+			filecontent = fgetc(fp);
+			if (filecontent == '.')
+			{
+				dot++;
+			}
+			if (filecontent == '\n')
+			{
+				lines++;
+				arithmeticaverage = (float)dot / all_dots;
+				if (dot != 0) printf("--> %4.2f <--\t\t --> %d <--\t\t--> %d <-- \n", arithmeticaverage, dot, lines);
+				dot = 0;
+			}
+			/*...........*/
+		} while (filecontent != EOF);
+	}
+	fclose(fp);
+	//arithmeticaverage = (float)dot / lines;
+	//printf("The arithmetic average of dots per line is %f\n", arithmeticaverage);
+}
+int count(char *file)
+{
+	FILE *fp;
+	errno_t err;
+	char filecontent;
+	int comments = 0;
+	err = fopen_s(&fp, file, "r");
+	if (fp == NULL)
+		perror("Error! Cannot open file!");
+	else
+	do
+	{
+		filecontent = fgetc(fp);
+		if (filecontent == '/')
+		{
+			filecontent = fgetc(fp);
+			if (filecontent == '*')
+			{
+				comments++;
+			}//2 if
+		}//1 if
+	} while (filecontent != EOF);
+	fclose(fp);
+	return comments;
+}
+void TaskD(char *file)/*comments in program*/
+{
+	FILE *fp;
+	errno_t err;
+	char filecontent;
+	int comments = 0, comments1 = 0;
+	err = fopen_s(&fp, file, "r");
+	if (fp == NULL)
+		perror("Error! Cannot open file!");
+	else
+	do
+	{
+		filecontent = fgetc(fp);
+		if (filecontent == '/')
+		{
+			filecontent = fgetc(fp);
+			if (filecontent == '/')
+				comments++;
+		}//if()
+	} while (filecontent != EOF);
+	comments1 = count(file);
+	printf("The comments with / / are: %d\n", comments);
+	printf("The comments with / * * / are :%d\n", comments1);
+	printf("Total count of comments is: %d\n", comments + comments1);
+	fclose(fp);
+}
+
+int main()
+{
+	char filepath[1024];
+	printf("Write file directory:");
+	gets_s(filepath, 1024);
+	for (int i = 0; i < sizeof(filepath); i++)
+	{
+		if (filepath[i] == '\0')
+		{
+			if (filepath[i - 1] != 'c')
+			{
+				perror("The file extension is not specified!");
+			}//2 if
+		}//1 if
+	}// for
+	for (int i = 0; i < sizeof(filepath); i++)
+	{
+		if (filepath[i] == '\\')
+		{
+			filepath[i] = '\\\\';
+		}
+	}
+	fileread(filepath);
+	int k = 0;
+	while (k != 1 || k != 2 || k != 3)
+	{
+		printf("\a\n\t---Menu---\n\n");
+		printf("1 for count of { and }\n");
+		printf("2 for count of dots per line\n");
+		printf("3 for count of comments in file\n");
+		printf("4 for Exit\n");
+		scanf_s("%d", &k);
+		switch (k)
+		{
+		case 1: TaskB(filepath); break;
+		case 2: TaskC(filepath); break;
+		case 3: TaskD(filepath); break;
+		case 4: exit(EXIT_SUCCESS); break;
+		default:k = 0; printf("Invalid choice!\n"); break;
+		}
+	}
+	TaskB(filepath);
+	TaskC(filepath);
+	TaskD(filepath);
+	return 0;
+}
