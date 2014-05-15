@@ -1,0 +1,38 @@
+/* Program for simple sorting a dynamic array using pointers */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+	int *arr;
+	int size, i, j, swap;
+	
+	printf("Input the size of array:");
+	scanf_s("%d", &size);
+	arr = malloc(sizeof(int)*size);
+	printf("Input elements:");
+	for (i = 0; i < size; i++)
+	{
+		scanf_s("%d", &*(arr+i));
+	}
+	for (i = 0; i <= (size - 1); i++)
+	{
+		for (j = 0; j <= size - i - 1; j++)
+		{
+			if (*(arr + j) < *(arr + j + 1)) 
+			{
+				swap = *(arr + j);
+				*(arr + j) = *(arr + j + 1);
+				*(arr + j + 1) = swap;
+			}
+		}
+	}
+	printf("Elements of the array after sorting:\n");
+	for (i = 0; i < size; i++)
+	{
+		printf("Element %d--->%d\n", i+1,*(arr+i));
+	}
+	free(arr);
+	return 0;
+}
