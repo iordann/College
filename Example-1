@@ -1,0 +1,84 @@
+/* A sample program for calculate the area of rectangle, circle and square where user input parameters of the 
+geometric figure */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int area1(int a, int b);
+float area2(float a);
+int area3(int a);
+
+float pi = 3.14;
+
+int menu()
+{
+	int a;
+	printf("-> Menu <-\n");
+	printf(">1: Task one<\n");
+	printf(">2: Task two<\n");
+	printf(">3: Task three<\n");
+	printf(">4: Exit<\n");
+	printf(">The system is waiting for your choice...<\n");
+	scanf("%d", &a);
+	switch (a)
+	{
+		case 1: taskone(); break;
+		case 2: tasktwo(); break;
+		case 3: taskthree(); break;
+		case 4: exit(EXIT_SUCCESS); break;
+		default: a = 0; printf("INVALID CHOICE!!!\n");
+	}
+	return 0;
+}
+int taskone() {
+	int a, b;
+	printf("You have chosen to find an area of an rectangle!\n");
+	printf("Input the dimensions:\n");
+	printf("Length is: ");
+	scanf("%d", &a);
+	printf("\nWidth is: ");
+	scanf("%d", &b);
+	printf("The area of the rectangle which is %d centimeters long and %d centimeters wide is %d\n", a, b, area1(a, b));
+	return 0;
+}
+int area1(int a, int b)
+{
+	int c;
+	return 	c = a * b;
+}
+int tasktwo()
+{
+	float a;
+	printf("You have chosen fo find the area of circle!\n");
+	printf("Input the dimensions:\n");
+	printf("Radius of the circle is: ");
+	scanf("%f", &a);
+	printf("The area of the circle which radius is %.2f is %3.3f\n", a, area2(a));
+	return 0;
+}
+float area2(float a)
+{
+	float c;
+	return c = pi * a * a;
+}
+int taskthree() {
+	int a;
+	printf("You have chosen to find an area of square!\n");
+	printf("Input the dimensions:\n");
+	printf("Length is: ");
+	scanf("%d", &a);
+	printf("The area of the square which is %d centimeters long is %d\n", a, area3(a));
+	return 0;
+}
+int area3(int a)
+{
+	int c;
+	return 	c = a * a;
+}
+int main()
+{
+	for(;;)
+	menu();
+	return 0;
+}
