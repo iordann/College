@@ -1,0 +1,38 @@
+/* An example which open .exe file and gets names of the processes which runs before .exe gets compiled */
+
+
+#include<stdio.h>
+#include<ctype.h>
+
+
+void read_exe(char *pfilename)
+{
+	FILE *fp, *pt;
+	int c, i = 0;
+	char buffer[255];
+	pt = fopen("D:\\output.txt", "w");
+	fp = fopen(pfilename, "rb");
+	if (fp == NULL)
+	{
+		perror("The file doesn't exist !");
+	}
+	while ((c = fgetc(fp)) != EOF)
+	{
+		while (isprint(c))
+		{
+			if (c == 44 || c == 46 || isalpha(c) || isdigit(c) || isspace(c))
+				buffer[i++] = c;
+			c = fgetc(fp);
+		}
+		if (i >= 3)
+			fprintf(pt, "%s\n", buffer);
+		memset(buffer, 0, sizeof(buffer));
+		i = 0;
+	}
+	fclose(fp);
+}
+int main(void)
+{
+	read_exe("C:\\Windows\\System32\\calc.exe");
+	return 0;
+}
