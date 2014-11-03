@@ -1,0 +1,202 @@
+package homework2;
+import java.util.*;
+
+public class homeWork {
+
+	public static void main(String[] args) {
+		// input all devices
+		Input();
+		Laptop lap1 = InputLap1();
+		Laptop lap2 = InputLap2();
+		
+
+		//InputLap1();
+		//InputLap2();
+		
+		//compare devices
+		System.out.println("Is Laptop 2 better than Laptop 1 ? " 
+				+ Laptop.isBetter(lap1, lap2));
+		if (Laptop.isBetter(lap1, lap2) == true) {
+			System.out.println(toString(lap2));
+		} else {
+			System.out.println(toString(lap1));
+		}
+		
+	}
+	//input electrical device
+	public static void Input() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Enter information about electrical device!");
+		System.out.println("Write the input voltage: ");
+		float voltage = input.nextFloat();
+		System.out.println("Input the model of processor: ");
+		String model = input.next();
+		ElectricalDevice elDev = new ElectricalDevice();
+		elDev.setInputVoltage(voltage);
+		elDev.setModelDev(model);
+		elDev.turnOn();
+	}
+	//input laptop 1
+	public static Laptop InputLap1() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Input information for laptop 1:");
+		
+		System.out.print("Input model of processor: ");
+		String model = input.nextLine();
+		
+		System.out.print("Input voltage: ");
+		float volt = input.nextFloat();
+		
+		System.out.print("RAM (GB)= ");
+		String ram = input.next();
+		
+		System.out.print("HDD = ");
+		String hdd = input.next();
+		System.out.println();
+		Laptop lap1 = new Laptop();
+		lap1.setInputV(volt);
+		lap1.setModelPro(model);
+		lap1.setRam(ram);
+		lap1.setHDD(hdd);
+		return lap1;
+	}
+	//input laptop 2
+	public static Laptop InputLap2() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Input information for laptop 2:");
+		System.out.print("Input model of processor: ");
+		String model = input.nextLine();
+		
+		System.out.print("Input voltage: ");
+		float volt = input.nextFloat();
+		
+		System.out.println("RAM (GB)= ");
+		String ram = input.next();
+		
+		System.out.println("HDD = ");
+		String hdd = input.next();
+		System.out.println();
+		Laptop lap2 = new Laptop();
+		lap2.setInputV(volt);
+		lap2.setModelPro(model);
+		lap2.setRam(ram);
+		lap2.setHDD(hdd);
+		return lap2;
+	}
+	//redefine toString() method
+	public static String toString(Laptop lap) {
+		String proc = "Model of Processor: " + lap.getModelOfProc() + "\n";
+		String voltage = "Input Voltage: " + lap.getInputVoltage() + "\n";
+		String ram = "RAM memory of the better laptop: " + lap.getRamMem() + "GB\n";
+		String hdd = "HDD of better laptop: " + lap.getHardDrive() + "GB\n";
+		return proc + voltage + ram + hdd;
+	}
+	
+}
+
+package homework2;
+
+public class Laptop extends ElectricalDevice{
+
+	private int ramMem;
+	private int hardDrive;
+	private static boolean isBet = false;
+	
+	public Laptop() {
+	}
+	//setter for voltage
+	public void setInputV(float inputV) {
+		setInputVoltage(inputV);
+	}
+	//setter for processor
+	public void setModelPro(String modelPro) {
+		setModelDev(modelPro);
+	}
+	//setter for RAM
+	public void setRam(String ram){
+		this.ramMem = stringToInt(ram);
+	}
+	//setter for HDD
+	public void setHDD(String hdd) {
+		this.hardDrive = stringToInt(hdd);
+	}
+	//transform ram and HDD memory if user has input them incorrectly
+	public int stringToInt(String memory) {
+		int mem = 0, i = -1;
+		while(i++ < memory.length() - 1) {
+			if (Character.isDigit(memory.charAt(i))){
+				mem *= 10;
+				mem += memory.charAt(i) - '0';
+			}
+		}
+		return mem;
+	}
+	//getter for processor
+	public String getModelOfProc() {
+		return getModelOfPro();
+	}
+	//getter for RAM
+	public int getRamMem() {
+		return this.ramMem;
+	}
+	//getter for HDD
+	public int getHardDrive() {
+		return this.hardDrive;
+	}
+	//getter for voltage
+	public float getVoltage() {
+		return getInputVoltage();
+	}
+	//compare both laptop and returns true if the second one is better
+	public static boolean isBetter(Laptop lap1, Laptop lap2) {
+		if ((lap2.ramMem > lap1.ramMem) && (lap2.hardDrive > lap1.hardDrive)) {
+			isBet = true;
+			return isBet;
+		} else {
+			isBet = false;
+			return isBet;
+		}
+	}
+}
+
+package homework2;
+
+public class ElectricalDevice {
+
+	private float inputVoltage;
+	private String modelOfProcessor;
+	private boolean isTurnOn = false;
+	// constructor without parameters
+	public ElectricalDevice() {
+	}
+	//setter for voltage
+	public void setInputVoltage(float inputV) {
+		this.inputVoltage = inputV;
+	}
+	//setter for processor
+	public void setModelDev(String modelDev) {
+		this.modelOfProcessor = modelDev;
+	}
+	//getter for voltage
+	public float getInputVoltage() {
+		return this.inputVoltage;
+	}
+	//getter for processor
+	public String getModelOfPro() {
+		return this.modelOfProcessor;
+	}
+	//method for turning on and turning off the device
+	public void turnOn() {
+		System.out.println("The device is turned on!");
+		isTurnOn = true;
+	}
+	public void turnOff() {
+		System.out.println("The device is turned off!");
+		isTurnOn = false;
+	}
+	//getter for the state of the device(turned on or turned off)
+	public boolean isTurnedOn() {
+		return isTurnOn;
+	}
+}
+
