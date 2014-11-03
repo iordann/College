@@ -1,0 +1,109 @@
+import java.util.*;
+
+public class Ships {
+
+	public static void main(String[] args) {
+		Scanner input = new Scanner(System.in);
+		int[][] board = new int[100][100];
+		boolean isEmpty = true;
+		int x1 = 0, y1 = 0, x2 = 0, y2 = 0, help = 0, help2, number = 0;
+		// Въвеждаме 5 координати на точките, където ще поставяме кораби
+		for(int i = 0; i < 5; i++) { 
+			number++;
+			try {
+			System.out.print("Въведи x1 координата за кораб " + (i + 1) + " : ");
+			x1 = input.nextInt();
+			System.out.print("Въведи y1 координата за кораб " + (i + 1) + " : ");
+			y1 = input.nextInt();
+			System.out.print("Въведи x2 координата за кораб " + (i + 1) + " : ");
+			x2 = input.nextInt();
+			System.out.print("Въведи y2 координата за кораб " + (i + 1) + " : ");
+			y2 = input.nextInt();
+			if (board[x1][y1] != 0) {
+				System.out.println();
+			}
+			}
+			// Изключение за неправилно въвеждане на цяло число
+			catch (java.util.InputMismatchException a){
+				System.out.println("Грешка при въвеждането на цяло число!"); 
+				return;
+			}
+			// Изключение за граници извън масива
+			catch (java.lang.ArrayIndexOutOfBoundsException e) {
+				System.out.println("Грешка! Въведохте координати, излизащи извън дъската!");
+				return;
+			}
+			// обръщане на координати, в случай, че са изпълнени дадените условия
+			if (x2 < x1 ) {
+				help = x2;
+				x2 = x1;
+				x1 = help;
+			}
+			if (y2 < y1) {
+				help = y2;
+				y2 = y1;
+				y1 = help;
+			}
+			help = x1;
+			help2 = y1;
+			if (number != 1) {
+				for (; y1 - 1 < y2; y1++) {
+					for (; x1 - 1 < x2; x1++) {
+						if (board[x1-1][y1-1] != 0)
+							isEmpty = false;
+					}
+					x1 = help;
+				}
+			}
+			x1 = help;
+			y1 = help2;
+			if (isEmpty){
+				for (; y1 - 1 < y2; y1++) {
+					for (; x1 - 1 < x2; x1++) {
+						board[x1-1][y1-1] = number;
+					}
+					x1 = help;
+				}
+			}
+			else {
+				System.out.println("Заетo! Въведи отново!");	
+				i--;
+				number--;
+				isEmpty = true;
+			}		
+			/*for(int k = 0; k < 100;k++) {
+				for(int j = 0; j < 100; j++) {
+					System.out.print(board[k][j]);
+				}
+				System.out.println();
+			}*/
+		}
+		for ( ; ; ) {
+			System.out.print("Въведи x координата за обстрелване: ");
+			x1 = input.nextInt();
+			System.out.print("Въведи y координата за обстрелване: ");
+			y1 = input.nextInt();
+			help = board[x1-1][y1-1];
+			if(help != 0) {
+				number--;
+				System.out.println("Попадение! Поздравления!");
+				System.out.println("Още " + number + " кораба.");
+				for (int i = 0; i < 100; i++) {
+					for (int j = 0; j < 100; j++) {
+						if (board[i][j] == help) {
+							board[i][j] = 0; 
+						}
+					}
+				}
+			}
+			else {
+				System.out.println("Опитай отново!");
+			}
+			if (number == 0) {
+				System.out.println("Успешно завършихте играта! Поздравления!");
+				break;
+			}
+		}
+		input.close();
+	}
+}
